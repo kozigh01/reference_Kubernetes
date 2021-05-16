@@ -20,9 +20,7 @@ spec:
           image: {{ .Values.image.repository -}}:{{- .Values.image.tag | default "latest" }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: {{ .Values.db.containerPort }}
-              protocol: TCP
+            - containerPort: {{ .Values.db.containerPort }}
           envFrom:
             - configMapRef:
                 name: {{ include "postgres.fullname" . }}-config
@@ -32,5 +30,5 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: {{ .Values.db.dbPersistentVolumeClaimName }}
+            claimName: {{ include "postgres.dbPersistentVolumeClaimName" . }}
 

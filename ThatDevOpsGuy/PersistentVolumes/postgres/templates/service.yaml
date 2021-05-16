@@ -11,3 +11,4 @@ spec:
     - name: http
       port: {{ .Values.db.servicePort }}
       targetPort: {{ .Values.db.containerPort }}
+      protocol: TCP

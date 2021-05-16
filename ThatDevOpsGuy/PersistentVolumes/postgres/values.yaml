@@ -87,6 +87,6 @@ db:
   userName: admin
   password: admin123
   mountPath: /Users/markkozisek/db/data
-  dbPersistentVolumeClaimName: db-claim
+  persistentVolumeClaimName: db-claim
   containerPort: 5432
   servicePort: 5432

@@ -60,3 +60,14 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Create the name of the database persistent volume claim
+*/}}
+{{- define "postgres.dbPersistentVolumeClaimName" -}}
+{{- if .Values.db.dbPersistentVolumeClaimName }}
+{{- printf "%s-%s" (include "postgres.fullname" .) .Values.db.dbPersistentVolumeClaimName  | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-db-claim" (include "postgres.fullname" .) | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end}}
