@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "sqlserver2019.fullname" . }}
+  labels:
+    {{- include "sqlserver2019.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "sqlserver2019.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "sqlserver2019.selectorLabels" . | nindent 6 }}
+  template:    
+    metadata:
+      labels:
+        {{- include "sqlserver2019.selectorLabels" . | nindent 8 }}
+    spec:
+      hostname: {{ .Values.hostname }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ include "sqlserver2019.fullname" . }}
+          command: ["/bin/bash"]
+          args: ["-c", "cp /var/opt/config/mssql.conf /var/opt/mssql/mssql.conf && /opt/mssql/bin/sqlservr"]
+          image: {{ .Values.image.repository -}}:{{- .Values.image.tag | default .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.containers.ports.containerPort }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "sqlserver2019.fullname" . }}-config
+          env:
+            - name: SQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-secret
+                  key: {{ .Values.db.sa_password_key }}
+          volumeMounts:
+            - name: mssqldb
+              mountPath: /var/opt/mssql
+            - name: mssqluserdb
+              mountPath: /var/opt/mssql/userdata
+            - name: mssqllog
+              mountPath: /var/opt/mssql/userlog
+            - name: mssqltemp
+              mountPath: /var/opt/mssql/tempdb
+            - name: mssql-config-volume
+              mountPath: /var/opt/config
+      volumes:
+        - name: mssqldb
+          persistentVolumeClaim:
+            claimName: mssql-data
+        - name: mssqluserdb
+          persistentVolumeClaim:
+            claimName: mssql-userdb
+        - name: mssqllog
+          persistentVolumeClaim:
+            claimName: mssql-log
+        - name: mssqltemp
+          persistentVolumeClaim:
+            claimName: mssql-temp
+        - name: mssql-config-volume
+          configMap:
+            name: mssql

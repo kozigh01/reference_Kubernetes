@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sqlserver2019.fullname" . }}-config
+  labels:
+    {{- include "sqlserver2019.labels" . | nindent 4 }}
+data:
+  MSSQL_PID: {{ .Values.db.MSSQL_PID }}
+  ACCEPT_EULA: {{ .Values.db.ACCEPT_EULA }}
+  MSSQL_AGENT_ENABLED: {{ .Values.db.MSSQL_AGENT_ENABLED }}

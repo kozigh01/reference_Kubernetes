@@ -1,0 +1,51 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mssql-data
+  annotations:
+    volume.beta.kubernetes.io/storage-class: hostpath
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100mi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mssql-userdb
+  annotations:
+    volume.beta.kubernetes.io/storage-class: hostpath
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100mi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mssql-log
+  annotations:
+    volume.beta.kubernetes.io/storage-class: hostpath
+spec:
+  accessModes:
+   - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100mi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mssql-temp
+  annotations:
+    volume.beta.kubernetes.io/storage-class: hostpath
+spec:
+  accessModes:
+   - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100mi
