@@ -30,7 +30,7 @@ spec:
             - configMapRef:
                 name: {{ include "sqlserver2019.fullname" . }}-config
           env:
-            - name: SQL_PASSWORD
+            - name: SA_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ include "sqlserver2019.fullname" . -}}-mssql-secret
