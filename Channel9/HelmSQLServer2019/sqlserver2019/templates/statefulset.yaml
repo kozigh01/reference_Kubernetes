@@ -30,10 +30,10 @@ spec:
             - configMapRef:
                 name: {{ include "sqlserver2019.fullname" . }}-config
           env:
-            - name: SQ_PASSWORD
+            - name: SQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mssql-secret
+                  name: {{ include "sqlserver2019.fullname" . -}}-mssql-secret
                   key: {{ .Values.db.sa_password_key }}
           volumeMounts:
             - name: mssqldb
@@ -61,4 +61,4 @@ spec:
             claimName: mssql-temp
         - name: mssql-config-volume
           configMap:
-            name: mssql
+            name: {{ include "sqlserver2019.fullname" . -}}-mssql

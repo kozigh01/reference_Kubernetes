@@ -15,4 +15,17 @@ $ helm create sqlserver2019
 
 # check the chart for valid syntax
 $ helm install <<helm release name here>> ./postgres --debug --dry-run  
+
+# install the chart (must be in the PersistentVolumes directory)
+$ helm install <<helm release name here>> ./postgres --namespace db --create-namespace
+$ kubectl describe pod postgres-0 --namespace db # find the name of the container in the pod
+$ kubectl exec pod/sqlserver-sqlserver2019-0 -c sqlserver-sqlserver2019 --namespace db -it -- bash # attach to the running container
+
+
+# check that the database has persistence - assume installed with release name "sqllserver"
+$ kubectl get pod --namespace db  # find the name of the db pod
+
+
+# remove the chart
+$ helm uninstall <<helm release name here>> --namespace db
 ```

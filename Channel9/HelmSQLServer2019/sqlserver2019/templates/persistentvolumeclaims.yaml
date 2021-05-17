@@ -1,7 +1,9 @@
-kind: PersistentVolumeClaim
 apiVersion: v1
+kind: PersistentVolumeClaim
 metadata:
   name: mssql-data
+  labels:
+    {{- include "sqlserver2019.labels" . | nindent 4 }}
   annotations:
     volume.beta.kubernetes.io/storage-class: hostpath
 spec:
@@ -9,12 +11,14 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 100mi
+      storage: 2Gi
 ---
-kind: PersistentVolumeClaim
 apiVersion: v1
+kind: PersistentVolumeClaim
 metadata:
   name: mssql-userdb
+  labels:
+    {{- include "sqlserver2019.labels" . | nindent 4 }}
   annotations:
     volume.beta.kubernetes.io/storage-class: hostpath
 spec:
@@ -22,12 +26,14 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 100mi
+      storage: 1Gi
 ---
-kind: PersistentVolumeClaim
 apiVersion: v1
+kind: PersistentVolumeClaim
 metadata:
   name: mssql-log
+  labels:
+    {{- include "sqlserver2019.labels" . | nindent 4 }}  
   annotations:
     volume.beta.kubernetes.io/storage-class: hostpath
 spec:
@@ -35,12 +41,14 @@ spec:
    - ReadWriteOnce
   resources:
     requests:
-      storage: 100mi
+      storage: 500Mi
 ---
-kind: PersistentVolumeClaim
 apiVersion: v1
+kind: PersistentVolumeClaim
 metadata:
   name: mssql-temp
+  labels:
+    {{- include "sqlserver2019.labels" . | nindent 4 }}  
   annotations:
     volume.beta.kubernetes.io/storage-class: hostpath
 spec:
@@ -48,4 +56,4 @@ spec:
    - ReadWriteOnce
   resources:
     requests:
-      storage: 100mi
+      storage: 500Mi

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sqlserver2019.fullname" . }}
+  labels:
+    {{- include "sqlserver2019.labels" . | nindent 4}}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    {{- include "sqlserver2019.selectorLabels" . | nindent 6 }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.containers.ports.containerPort }}
+      {{ if eq .Values.service.type "NodePort" }}nodePort: {{ .Values.service.externalPort }}{{ end }}
+      protocol: TCP
