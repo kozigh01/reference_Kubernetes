@@ -15,7 +15,7 @@ db:
   MSSQL_PID: "Developer"
   MSSQL_AGENT_ENABLED: "false"
   sa_password_key: sa_password
-  sa_password: "Toughpass1!"
+  sa_password: "Password1#"
   mountPath: /Users/markkozisek/db/mssql/data
   persistentVolumeClaimName: db-claim
 

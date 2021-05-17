@@ -14,16 +14,24 @@ $ kubectl describe StorageClass hostpath
 $ helm create sqlserver2019
 
 # check the chart for valid syntax
-$ helm install <<helm release name here>> ./postgres --debug --dry-run  
+$ helm install <<helm release name here>> ./sqlserver2019 --debug --dry-run  
 
 # install the chart (must be in the PersistentVolumes directory)
-$ helm install <<helm release name here>> ./postgres --namespace db --create-namespace
-$ kubectl describe pod postgres-0 --namespace db # find the name of the container in the pod
-$ kubectl exec pod/sqlserver-sqlserver2019-0 -c sqlserver-sqlserver2019 --namespace db -it -- bash # attach to the running container
+$ helm install <<helm release name here>> ./sqlserver2019 --namespace db --create-namespace
+$ kubectl describe pod <<pod name here>> --namespace db # find the name of the container in the pod
+$ kubectl exec pod/<<pod name here>> -c <<container name here>> --namespace db -it -- bash # attach to the running container
 
 
-# check that the database has persistence - assume installed with release name "sqllserver"
-$ kubectl get pod --namespace db  # find the name of the db pod
+# check that the database has persistence - use SSMS or Azure Data Studio
+* Azure Data Studio
+  * Connection Type: Microsoft SQL Server
+  * Server: localhost,30010,30010,30010
+  * Authentication Type: SQL Login
+    * User Name: sa
+    * Password: see the values.yaml file for db.sa_password
+* Create MasteryFuel database
+* Run the database migration project in the Fuel project to populate Fuel db
+* Kill pod and see if data is persisted
 
 
 # remove the chart
